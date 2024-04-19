@@ -76,6 +76,8 @@ WSGI_APPLICATION = 'todoprj.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
+
+# Add your database information here!
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',

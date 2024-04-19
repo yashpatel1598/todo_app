@@ -22,6 +22,8 @@ from rest_framework.response import Response
 
 # Create your views here.
 
+
+# Authentication
 @permission_classes((IsAuthenticated,))
 def home(request):
     if request.method == 'POST':
@@ -40,6 +42,7 @@ def home(request):
     }
     return render(request, "todoapp/todo.html", context)
 
+# For User Registration
 def register(request):
     if request.user.is_authenticated:
         return redirect('home-page')
@@ -66,7 +69,7 @@ def register(request):
         return redirect('login')
     return render(request, 'todoapp/register.html', {})
 
-
+# Login View Function
 def loginpage(request):
     if request.user.is_authenticated:
         return redirect('home-page')
@@ -85,13 +88,14 @@ def loginpage(request):
 
     return render(request, 'todoapp/login.html', {})
 
-# @login_required
+# Delete TO-DO TASK Function 
 @permission_classes([IsAuthenticated])
 def DeleteTask(request, name):
     get_todo = todo.objects.get(user=request.user, todo_name=name)
     get_todo.delete()
     return redirect('home-page')
 
+# Update TO-DO Function 
 @permission_classes([IsAuthenticated])
 def update_task_todo(request, todo_name):
     # Get the first todo item with the given name for the current user
@@ -111,8 +115,8 @@ def update_task_todo(request, todo_name):
         messages.error(request, 'Can not update the task')
         return redirect('home-page')
 
-# @login_required
-# Mark as Complete
+
+# "Mark as Complete" TO-DO Function 
 @permission_classes([IsAuthenticated])
 def Update(request, name):
     get_todo = todo.objects.get(user=request.user, todo_name=name)
@@ -120,6 +124,7 @@ def Update(request, name):
     get_todo.save()
     return redirect('home-page')
 
+# LogOUT User Function
 def LogoutView(request):
     logout(request)
     return redirect('login')
