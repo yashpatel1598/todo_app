@@ -14,7 +14,7 @@ from rest_framework import status
 from rest_framework_simplejwt.tokens import RefreshToken
 
 from rest_framework.parsers import JSONParser, FormParser, MultiPartParser
-from rest_framework_jwt.views import obtain_jwt_token
+# from rest_framework_jwt.views import obtain_jwt_token
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.response import Response
@@ -92,6 +92,25 @@ def DeleteTask(request, name):
     get_todo.delete()
     return redirect('home-page')
 
+@permission_classes([IsAuthenticated])
+def update_task_todo(request, todo_name):
+    # Get the first todo item with the given name for the current user
+    todo_instance = todo.objects.filter(user=request.user, todo_name=todo_name).first()
+    print(todo_instance)
+    
+    if todo_instance:
+        new_task_name = todo_name  # Use the task name from the URL path
+        print(new_task_name)
+        if new_task_name:
+            print(new_task_name,"new_task_name")
+            # Update the task name
+            todo_instance.todo_name = new_task_name
+            todo_instance.save()
+            return redirect('home-page')
+    else :
+        messages.error(request, 'Can not update the task')
+        return redirect('home-page')
+
 # @login_required
 # Mark as Complete
 @permission_classes([IsAuthenticated])
@@ -100,7 +119,6 @@ def Update(request, name):
     get_todo.status = True
     get_todo.save()
     return redirect('home-page')
-
 
 def LogoutView(request):
     logout(request)
