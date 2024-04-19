@@ -17,7 +17,7 @@ Mark tasks as completed: Users can mark tasks as completed to keep track of thei
 
 Installation
 Clone the repository:
-git clone https://github.com/your_username/todo-list.git
+git clone https://github.com/yashpatel1598/todo_app/
 
 Navigate to the project directory:
 cd todo-list
@@ -55,7 +55,7 @@ Learning :
 1st : The task we have with same name can not be added again (it creates issue at time of update)                                                     
 2nd : Once task is added and then after update the task for that task mark as a completed same issue                                                     
 3rd : After update or edit the task in to-do list referesh the page (Froented-side it can be challenge)                                                  
-                             **once we start learning all will be easy** 
+                                **once we start learning all will be easy** 
 
 Contributing
 Contributions are welcome! If you have any suggestions, feature requests, or bug reports, please open an issue or submit a pull request on GitHub.
