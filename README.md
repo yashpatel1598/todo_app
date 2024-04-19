@@ -1,3 +1,6 @@
+
+![todo_app](https://github.com/yashpatel1598/todo_app/assets/87722800/0a6485d6-968b-4d16-8cf2-1a6708b6877e)
+
 This Django Todo list is project is a simple web application that allows user to register create , view , update and delete thier to-do task.
 it's built using Django web Framwork and as a Froented used Html/Css/Javascript.
 
