@@ -12,6 +12,7 @@ from rest_framework.response import Response
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework import status
 from rest_framework_simplejwt.tokens import RefreshToken
+import time
 
 from rest_framework.parsers import JSONParser, FormParser, MultiPartParser
 # from rest_framework_jwt.views import obtain_jwt_token
@@ -24,6 +25,7 @@ from rest_framework.response import Response
 
 
 # Authentication
+@login_required
 @permission_classes((IsAuthenticated,))
 def home(request):
     if request.method == 'POST':
@@ -50,8 +52,6 @@ def register(request):
         username = request.POST.get('username')
         email = request.POST.get('email')
         password = request.POST.get('password')
-
-        print(username,password,email)
 
         if len(password) < 7:
             messages.error(request, 'Password must be at least 8 characters')
@@ -98,16 +98,18 @@ def DeleteTask(request, name):
 # Update TO-DO Function 
 @permission_classes([IsAuthenticated])
 def update_task_todo(request, todo_name):
+
+    old_task_name = request.POST.get('old_task_name')
+    new_task_name = request.POST.get('new_task_name')
     # Get the first todo item with the given name for the current user
-    todo_instance = todo.objects.filter(user=request.user, todo_name=todo_name).first()
-    print(todo_instance)
-    
+    todo_instance = todo.objects.filter(user=request.user, todo_name=old_task_name).first()
+    if todo_instance.status == True:
+        print(">>>>>>>>>>>>>>")
+        messages.error(request, 'This task has already been completed')
+        return redirect('register')
+
     if todo_instance:
-        new_task_name = todo_name  # Use the task name from the URL path
-        print(new_task_name)
         if new_task_name:
-            print(new_task_name,"new_task_name")
-            # Update the task name
             todo_instance.todo_name = new_task_name
             todo_instance.save()
             return redirect('home-page')
@@ -128,4 +130,5 @@ def Update(request, name):
 def LogoutView(request):
     logout(request)
     return redirect('login')
+
 

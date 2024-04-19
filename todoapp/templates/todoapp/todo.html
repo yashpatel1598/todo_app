@@ -17,7 +17,7 @@
 
             {% if messages %}
               {% for message in messages %}
-                <h2 style="color: #b22222;">{{message}}</h2>
+                <h4 style="color: #b22222;">{{message}}</h2>
               {% endfor %}
             {% endif %}
 
@@ -57,9 +57,10 @@
                     <!-- Add the update form here with the appropriate classes -->
                     <form method="POST" action="{% url 'update_task_todo' i.todo_name %}" class="update-task-form">
                       {% csrf_token %}
+                      <input type="hidden" name="old_task_name" value="{{ i.todo_name }}">
                       <input type="text" name="new_task_name" placeholder="Enter updated task name">
                       <button type="submit" class="btn btn-success ms-1">Update Task</button>
-                    </form>
+                  </form>
                   </td>
                 </tr>
                 {% endfor %}
@@ -88,7 +89,36 @@ $(document).ready(function() {
             // If the update is successful, update the task name in the UI
             var updatedTaskName = form.find("input[name='new_task_name']").val();
             form.closest("tr").find(".todo-name").text(updatedTaskName);
+        }).done(function() {
+            // After successful update, reload the page to ensure all data is up-to-date
+            location.reload();
+        }).fail(function() {
+            // Handle errors if any
+            alert("Failed to update task. Please try again.");
         });
     });
+
+    // Handle click event for delete button
+    $(".delete-task-btn").click(function(event) {
+        event.preventDefault();
+        var deleteUrl = $(this).attr("href");
+        $.ajax({
+            url: deleteUrl,
+            type: 'DELETE',
+            success: function(response) {
+                // If the delete operation is successful, remove the task from the UI
+                $(this).closest("tr").remove();
+            },
+            error: function() {
+                // Handle errors if any
+                alert("Failed to delete task. Please try again.");
+            }
+        }).done(function() {
+            // After successful delete, reload the page to ensure all data is up-to-date
+            location.reload();
+        });
+    });
+
+    // Similar logic can be applied for other actions like mark as complete
 });
 </script>
